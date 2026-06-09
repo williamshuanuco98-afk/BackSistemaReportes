@@ -2,6 +2,7 @@ package com.sistemareportes.backsistema.controller;
 
 import com.sistemareportes.backsistema.dto.LoginRequest;
 import com.sistemareportes.backsistema.dto.LoginResponse;
+import com.sistemareportes.backsistema.dto.RegisterRequest;
 import com.sistemareportes.backsistema.model.Usuario;
 import com.sistemareportes.backsistema.service.UsuarioService;
 import jakarta.validation.Valid;
@@ -24,6 +25,22 @@ public class AuthController {
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
         try {
             Usuario usuario = usuarioService.login(request.getEmail(), request.getPassword());
+            LoginResponse response = new LoginResponse(
+                    usuario.getId(),
+                    usuario.getCorreo(),
+                    usuario.getRol().name(),
+                    usuario.getNombre()
+            );
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
+        try {
+            Usuario usuario = usuarioService.registrar(request);
             LoginResponse response = new LoginResponse(
                     usuario.getId(),
                     usuario.getCorreo(),
