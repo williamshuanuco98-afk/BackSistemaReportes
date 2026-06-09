@@ -82,7 +82,7 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 
         // Mapear urgencia segura
         try {
-            inc.setUrgency(Urgencia.valueOf(request.getUrgency().toLowerCase()));
+            inc.setUrgencia(Urgencia.valueOf(request.getUrgency().toLowerCase()));
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Urgencia inválida: " + request.getUrgency());
         }
@@ -99,7 +99,7 @@ public class IncidenciaServiceImpl implements IncidenciaService {
         Incidencia inc = incidenciaRepository.findByCodigoFolio(codigoFolio)
                 .orElseThrow(() -> new RuntimeException("Incidencia no encontrada: " + codigoFolio));
 
-        inc.setUrgency(Urgencia.alta);
+        inc.setUrgencia(Urgencia.alta);
         inc = incidenciaRepository.save(inc);
         return mapToResponse(inc);
     }
@@ -156,7 +156,7 @@ public class IncidenciaServiceImpl implements IncidenciaService {
         IncidentResponse res = new IncidentResponse();
         res.setId(inc.getCodigoFolio());
         res.setLocation(inc.getUbicacion());
-        res.setUrgency(inc.getUrgency().name());
+        res.setUrgency(inc.getUrgencia().name());
         res.setStatus(inc.getEstado().name());
         res.setTitle(inc.getTitulo());
         res.setDescription(inc.getDescripcion());
